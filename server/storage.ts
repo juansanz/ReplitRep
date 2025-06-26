@@ -1,4 +1,6 @@
 import { users, quizAttempts, analytics, blockedIps, type User, type InsertUser, type QuizAttempt, type InsertQuizAttempt, type Analytics, type InsertAnalytics, type BlockedIp, type InsertBlockedIp } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -14,114 +16,80 @@ export interface IStorage {
   getBlockedIps(): Promise<BlockedIp[]>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private quizAttempts: Map<string, QuizAttempt>;
-  private analytics: Map<number, Analytics>;
-  private blockedIps: Map<string, BlockedIp>;
-  private currentUserId: number;
-  private currentQuizAttemptId: number;
-  private currentAnalyticsId: number;
-  private currentBlockedIpId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.quizAttempts = new Map();
-    this.analytics = new Map();
-    this.blockedIps = new Map();
-    this.currentUserId = 1;
-    this.currentQuizAttemptId = 1;
-    this.currentAnalyticsId = 1;
-    this.currentBlockedIpId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async getQuizAttempt(sessionId: string): Promise<QuizAttempt | undefined> {
-    return this.quizAttempts.get(sessionId);
+    const [attempt] = await db.select().from(quizAttempts).where(eq(quizAttempts.sessionId, sessionId));
+    return attempt || undefined;
   }
 
   async createQuizAttempt(insertAttempt: InsertQuizAttempt): Promise<QuizAttempt> {
-    const id = this.currentQuizAttemptId++;
-    const now = new Date();
-    const attempt: QuizAttempt = {
-      id,
-      sessionId: insertAttempt.sessionId,
-      currentQuestion: insertAttempt.currentQuestion || 0,
-      completed: insertAttempt.completed || false,
-      createdAt: now,
-      completedAt: insertAttempt.completedAt || null,
-    };
-    this.quizAttempts.set(insertAttempt.sessionId, attempt);
+    const [attempt] = await db
+      .insert(quizAttempts)
+      .values(insertAttempt)
+      .returning();
     return attempt;
   }
 
   async updateQuizAttempt(sessionId: string, updates: Partial<QuizAttempt>): Promise<QuizAttempt | undefined> {
-    const existing = this.quizAttempts.get(sessionId);
-    if (!existing) return undefined;
-
-    const updated: QuizAttempt = { ...existing, ...updates };
-    if (updates.completed && !existing.completed) {
-      updated.completedAt = new Date();
+    if (updates.completed && updates.completedAt === undefined) {
+      updates.completedAt = new Date();
     }
     
-    this.quizAttempts.set(sessionId, updated);
-    return updated;
+    const [updatedAttempt] = await db
+      .update(quizAttempts)
+      .set(updates)
+      .where(eq(quizAttempts.sessionId, sessionId))
+      .returning();
+    
+    return updatedAttempt || undefined;
   }
 
   async trackAnalytics(insertAnalytics: InsertAnalytics): Promise<Analytics> {
-    const id = this.currentAnalyticsId++;
-    const analytics: Analytics = {
-      id,
-      event: insertAnalytics.event,
-      sessionId: insertAnalytics.sessionId,
-      questionNumber: insertAnalytics.questionNumber || null,
-      answer: insertAnalytics.answer || null,
-      ipAddress: insertAnalytics.ipAddress || null,
-      timestamp: new Date(),
-    };
-    this.analytics.set(id, analytics);
-    return analytics;
+    const [analyticsRecord] = await db
+      .insert(analytics)
+      .values(insertAnalytics)
+      .returning();
+    return analyticsRecord;
   }
 
   async getAnalytics(): Promise<Analytics[]> {
-    return Array.from(this.analytics.values());
+    return await db.select().from(analytics);
   }
 
   async isIpBlocked(ipAddress: string): Promise<boolean> {
-    return this.blockedIps.has(ipAddress);
+    const [blocked] = await db.select().from(blockedIps).where(eq(blockedIps.ipAddress, ipAddress));
+    return !!blocked;
   }
 
   async blockIp(insertBlockedIp: InsertBlockedIp): Promise<BlockedIp> {
-    const id = this.currentBlockedIpId++;
-    const blockedIp: BlockedIp = {
-      id,
-      ipAddress: insertBlockedIp.ipAddress,
-      reason: insertBlockedIp.reason,
-      blockedAt: new Date(),
-    };
-    this.blockedIps.set(insertBlockedIp.ipAddress, blockedIp);
-    return blockedIp;
+    const [blocked] = await db
+      .insert(blockedIps)
+      .values(insertBlockedIp)
+      .returning();
+    return blocked;
   }
 
   async getBlockedIps(): Promise<BlockedIp[]> {
-    return Array.from(this.blockedIps.values());
+    return await db.select().from(blockedIps);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

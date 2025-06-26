@@ -53,131 +53,39 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
             <Card className="shadow-lg overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000" 
-                alt="Foto principal de Juan" 
+                alt="Foto de Juan" 
                 className="w-full h-96 object-cover"
               />
               
               <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h2 className="text-2xl font-bold text-neutral">Juan</h2>
-                    <p className="text-gray-600">28 años</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="flex items-center text-primary mb-1">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      <span className="text-sm">Madrid, España</span>
-                    </div>
-                    <div className="flex items-center text-secondary">
-                      <Briefcase className="w-4 h-4 mr-1" />
-                      <span className="text-sm">Ingeniero de Software</span>
-                    </div>
-                  </div>
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-neutral mb-2">Juan</h2>
+                  <p className="text-gray-600">Madrid, España</p>
                 </div>
-                
-                <p className="text-gray-700 leading-relaxed">
-                  Apasionado por la tecnología, los viajes y las buenas conversaciones. 
-                  Me encanta cocinar, hacer senderismo los fines de semana y descubrir nuevos lugares. 
-                  Busco a alguien especial para compartir aventuras y crear recuerdos inolvidables.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Photo Gallery */}
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-neutral mb-4 flex items-center">
-                  <Images className="w-5 h-5 mr-2 text-primary" />
-                  Más fotos
-                </h3>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <img 
-                    src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
-                    alt="Juan haciendo senderismo" 
-                    className="w-full h-32 object-cover rounded-xl"
-                  />
-                  
-                  <img 
-                    src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
-                    alt="Juan cocinando" 
-                    className="w-full h-32 object-cover rounded-xl"
-                  />
-                  
-                  <img 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
-                    alt="Juan leyendo en un café" 
-                    className="w-full h-32 object-cover rounded-xl"
-                  />
-                  
-                  <img 
-                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
-                    alt="Juan viajando" 
-                    className="w-full h-32 object-cover rounded-xl"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Interests Section */}
-            <Card className="shadow-lg">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-neutral mb-4 flex items-center">
-                  <Heart className="w-5 h-5 mr-2 text-primary" />
-                  Mis intereses
-                </h3>
-                
-                <div className="flex flex-wrap gap-2">
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">🏔️ Senderismo</span>
-                  <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">👨‍🍳 Cocina</span>
-                  <span className="bg-accent/20 text-neutral px-3 py-1 rounded-full text-sm font-medium">✈️ Viajes</span>
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">📚 Lectura</span>
-                  <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">💻 Tecnología</span>
-                  <span className="bg-accent/20 text-neutral px-3 py-1 rounded-full text-sm font-medium">🎬 Cine</span>
-                  <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">🏃‍♂️ Running</span>
-                  <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">🎵 Música</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <Card className="shadow-lg bg-gradient-to-r from-primary to-secondary text-white">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4 flex items-center">
-                  <Phone className="w-5 h-5 mr-2" />
-                  Información de contacto
-                </h3>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between bg-white/20 rounded-xl p-3">
-                    <div className="flex items-center">
-                      <Phone className="w-4 h-4 mr-3" />
-                      <span>Teléfono</span>
-                    </div>
-                    <a href="tel:+34612345678" className="font-semibold hover:underline">+34 612 345 678</a>
-                  </div>
+                  <Button 
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 h-auto shadow-lg hover:shadow-xl transition-all duration-300"
+                    onClick={() => window.open('https://wa.me/34644496175', '_blank')}
+                  >
+                    <MessageSquare className="mr-2 w-5 h-5" />
+                    Chatear por WhatsApp
+                  </Button>
                   
-                  <div className="flex items-center justify-between bg-white/20 rounded-xl p-3">
-                    <div className="flex items-center">
-                      <Mail className="w-4 h-4 mr-3" />
-                      <span>Email</span>
-                    </div>
-                    <a href="mailto:juan@ejemplo.com" className="font-semibold hover:underline">juan@ejemplo.com</a>
-                  </div>
-                  
-                  <div className="flex items-center justify-between bg-white/20 rounded-xl p-3">
-                    <div className="flex items-center">
-                      <MessageSquare className="w-4 h-4 mr-3" />
-                      <span>WhatsApp</span>
-                    </div>
-                    <a href="https://wa.me/34612345678" className="font-semibold hover:underline">+34 612 345 678</a>
-                  </div>
+                  <Button 
+                    variant="outline"
+                    className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-4 px-6 h-auto shadow-lg hover:shadow-xl transition-all duration-300"
+                    onClick={() => window.open('tel:+34644496175', '_self')}
+                  >
+                    <Phone className="mr-2 w-5 h-5" />
+                    Llamar ahora
+                  </Button>
                 </div>
                 
-                <div className="mt-4 p-3 bg-white/20 rounded-xl">
-                  <p className="text-sm text-center">
+                <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                  <p className="text-sm text-center text-gray-600">
                     <Info className="w-4 h-4 inline mr-1" />
-                    Gracias por completar el desafío. ¡Espero conocerte pronto! 😊
+                    Gracias por completar el desafío. ¡Espero conocerte pronto!
                   </p>
                 </div>
               </CardContent>
