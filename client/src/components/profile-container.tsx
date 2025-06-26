@@ -60,7 +60,7 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
               <CardContent className="p-6">
                 <div className="text-center mb-6">
                   <h2 className="text-2xl font-bold text-neutral mb-2">Juan</h2>
-                  <p className="text-gray-600">Madrid, España</p>
+                  <p className="text-gray-600">Valencia, España</p>
                 </div>
                 
                 <div className="space-y-3">
@@ -72,6 +72,12 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
                     Chatear por WhatsApp
                   </Button>
                   
+                  <div className="p-3 bg-green-50 border border-green-200 rounded-xl">
+                    <p className="text-sm text-center text-green-700 font-medium">
+                      Inicia la conversación de WhatsApp con tu sticker favorito 🤓
+                    </p>
+                  </div>
+                  
                   <Button 
                     variant="outline"
                     className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-4 px-6 h-auto shadow-lg hover:shadow-xl transition-all duration-300"
@@ -80,12 +86,6 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
                     <Phone className="mr-2 w-5 h-5" />
                     Llamar ahora
                   </Button>
-                </div>
-                
-                <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-                  <p className="text-sm text-center text-green-700 font-medium">
-                    🤓 Inicia la conversación de WhatsApp con tu sticker favorito
-                  </p>
                 </div>
                 
                 <div className="mt-4 p-4 bg-gray-50 rounded-xl">
