@@ -71,6 +71,7 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showQuestions, setShowQuestions] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const { toast } = useToast();
 
   const startQuizMutation = useMutation({
@@ -114,8 +115,10 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
       if (data.correct) {
         setShowError(false);
         if (data.completed) {
-          // Immediately show profile for completed quiz
+          // Set completed flag and immediately call completion handler
+          setIsCompleted(true);
           onQuizComplete(sessionId);
+          return; // Prevent any further rendering
         } else {
           setCurrentQuestion(prev => prev + 1);
         }
@@ -146,6 +149,11 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
   };
 
   const progressPercentage = Math.min((currentQuestion / 3) * 100, 100);
+
+  // Early return if quiz is completed to prevent extra page
+  if (isCompleted) {
+    return null;
+  }
 
   if (showQuestions && currentQuestion > 0 && currentQuestion <= 3) {
     const question = questions[currentQuestion - 1];
