@@ -71,7 +71,6 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showQuestions, setShowQuestions] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const { toast } = useToast();
 
   const startQuizMutation = useMutation({
@@ -83,8 +82,8 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
         return;
       }
       setSessionId(data.sessionId);
-      setShowQuestions(true);
       setCurrentQuestion(1);
+      setShowQuestions(true);
     },
     onError: async (error) => {
       // Check if it's a blocked IP error
@@ -119,7 +118,6 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
           onQuizComplete(sessionId);
         } else {
           setCurrentQuestion(prev => prev + 1);
-          setSelectedAnswer("");
         }
       } else {
         // Wrong answer - trigger incompatibility
@@ -144,13 +142,12 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
   });
 
   const handleAnswer = (answer: string) => {
-    setSelectedAnswer(answer);
     answerMutation.mutate({ answer, questionNumber: currentQuestion });
   };
 
-  const progressPercentage = (currentQuestion / 3) * 100;
+  const progressPercentage = Math.min((currentQuestion / 3) * 100, 100);
 
-  if (showQuestions && currentQuestion > 0) {
+  if (showQuestions && currentQuestion > 0 && currentQuestion <= 3) {
     const question = questions[currentQuestion - 1];
     const IconComponent = question.icon;
 
