@@ -34,7 +34,7 @@ export default function Home() {
   }
 
   if (quizCompleted && sessionId) {
-    return <ProfileContainer sessionId={sessionId} onGoBack={handleGoBack} />;
+    return <ProfileContainer sessionId={sessionId} />;
   }
 
   return <QuizContainer onQuizComplete={handleQuizComplete} onIncompatible={handleIncompatible} />;

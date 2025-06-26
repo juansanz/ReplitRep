@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Unlock, ArrowLeft, ShieldCheck, MapPin, Briefcase, Images, Heart, Phone, Mail, MessageSquare, Info } from "lucide-react";
+import { Check, Unlock, ShieldCheck, MapPin, Briefcase, Images, Heart, Phone, Mail, MessageSquare, Info } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 
 interface ProfileContainerProps {
   sessionId: string;
-  onGoBack: () => void;
 }
 
-export default function ProfileContainer({ sessionId, onGoBack }: ProfileContainerProps) {
+export default function ProfileContainer({ sessionId }: ProfileContainerProps) {
   const [showProfile, setShowProfile] = useState(false);
 
   const trackProfileViewMutation = useMutation({
@@ -20,25 +19,16 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
     }
   });
 
-  const handleGoBack = () => {
-    const confirmed = window.confirm('¿Seguro que quieres volver? Tendrás que completar el desafío de nuevo.');
-    if (confirmed) {
-      onGoBack();
-    }
-  };
+
 
   if (showProfile) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header with navigation */}
+        {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-100 p-4 sticky top-0 z-10">
-          <div className="max-w-md mx-auto flex items-center justify-between">
-            <Button variant="ghost" onClick={handleGoBack} className="flex items-center space-x-2 text-gray-600 hover:text-primary">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Volver</span>
-            </Button>
+          <div className="max-w-md mx-auto flex items-center justify-center">
             <h1 className="text-xl font-semibold text-neutral">Mi Perfil</h1>
-            <div className="flex items-center space-x-2 text-sm text-success">
+            <div className="absolute right-0 flex items-center space-x-2 text-sm text-success">
               <ShieldCheck className="w-4 h-4" />
               <span>Verificado</span>
             </div>
