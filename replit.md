@@ -91,6 +91,9 @@ Changelog:
 - June 26, 2025. Updated questions to Juan's specific preferences (life answer, tortilla preference, smoking)
 - June 26, 2025. Implemented IP blocking system for deal-breaker answers (smoking question)
 - June 26, 2025. Removed retry functionality for permanently blocked users
+- June 26, 2025. Simplified profile to show only photo and contact buttons (+34 644496175)
+- June 26, 2025. Added WhatsApp sticker message and removed answer highlighting
+- June 26, 2025. Changed quiz start button text to "Vamos a ello"
 ```
 
 ## User Preferences

@@ -291,7 +291,7 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
               disabled={startQuizMutation.isPending}
             >
               <Play className="mr-2 w-4 h-4" />
-              Comenzar Desafío
+              Vamos a ello
             </Button>
           </div>
         </div>
