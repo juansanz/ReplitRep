@@ -82,7 +82,13 @@ export default function ProfileContainer({ sessionId, onGoBack }: ProfileContain
                   </Button>
                 </div>
                 
-                <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+                  <p className="text-sm text-center text-green-700 font-medium">
+                    🤓 Inicia la conversación de WhatsApp con tu sticker favorito
+                  </p>
+                </div>
+                
+                <div className="mt-4 p-4 bg-gray-50 rounded-xl">
                   <p className="text-sm text-center text-gray-600">
                     <Info className="w-4 h-4 inline mr-1" />
                     Gracias por completar el desafío. ¡Espero conocerte pronto!

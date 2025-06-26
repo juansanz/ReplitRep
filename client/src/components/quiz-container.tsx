@@ -115,12 +115,11 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
       if (data.correct) {
         setShowError(false);
         if (data.completed) {
+          // Immediately show profile for completed quiz
           onQuizComplete(sessionId);
         } else {
-          setTimeout(() => {
-            setCurrentQuestion(prev => prev + 1);
-            setSelectedAnswer("");
-          }, 500);
+          setCurrentQuestion(prev => prev + 1);
+          setSelectedAnswer("");
         }
       } else {
         // Wrong answer - trigger incompatibility
