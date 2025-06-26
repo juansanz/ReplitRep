@@ -216,16 +216,12 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
                     <Button
                       key={option.letter}
                       variant="outline"
-                      className={`w-full text-left p-4 h-auto justify-start hover:border-primary hover:bg-red-50 transition-all duration-200 ${
-                        selectedAnswer === option.letter && !option.isCorrect ? 'border-destructive bg-destructive/10' : ''
-                      }`}
+                      className="w-full text-left p-4 h-auto justify-start hover:border-primary hover:bg-red-50 transition-all duration-200"
                       onClick={() => handleAnswer(option.letter)}
                       disabled={answerMutation.isPending}
                     >
                       <div className="flex items-center w-full">
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold mr-3 ${
-                          option.isCorrect ? 'bg-primary text-white' : 'bg-gray-400 text-white'
-                        }`}>
+                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-sm font-semibold mr-3 bg-gray-400 text-white">
                           {option.letter}
                         </span>
                         <span className="flex-1">{option.text}</span>
