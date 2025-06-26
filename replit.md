@@ -28,7 +28,8 @@ This is a Spanish-language dating/quiz application built with a React frontend a
 #### Database Schema
 - **Users**: Basic user authentication table
 - **Quiz Attempts**: Tracks quiz sessions and progress
-- **Analytics**: Comprehensive event tracking for user interactions
+- **Analytics**: Comprehensive event tracking for user interactions with IP addresses
+- **Blocked IPs**: Tracks permanently blocked IP addresses for deal-breaker answers
 
 #### Frontend Components
 - **Quiz Container**: Multi-step quiz interface with progress tracking
@@ -38,7 +39,8 @@ This is a Spanish-language dating/quiz application built with a React frontend a
 #### Backend Services
 - **Storage Layer**: Abstracted storage interface with in-memory implementation for development
 - **Quiz API**: Endpoints for starting quiz, submitting answers, and tracking progress
-- **Analytics API**: Event tracking for user behavior analysis
+- **Analytics API**: Event tracking for user behavior analysis with IP tracking
+- **IP Blocking System**: Permanent blocking for users who fail deal-breaker questions
 
 ## Data Flow
 
@@ -86,6 +88,9 @@ This is a Spanish-language dating/quiz application built with a React frontend a
 ```
 Changelog:
 - June 26, 2025. Initial setup
+- June 26, 2025. Updated questions to Juan's specific preferences (life answer, tortilla preference, smoking)
+- June 26, 2025. Implemented IP blocking system for deal-breaker answers (smoking question)
+- June 26, 2025. Removed retry functionality for permanently blocked users
 ```
 
 ## User Preferences

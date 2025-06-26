@@ -4,10 +4,29 @@ import { storage } from "./storage";
 import { insertQuizAttemptSchema, insertAnalyticsSchema } from "@shared/schema";
 import { nanoid } from "nanoid";
 
+// Helper function to get client IP
+function getClientIp(req: any): string {
+  return req.headers['x-forwarded-for']?.split(',')[0] || 
+         req.connection?.remoteAddress || 
+         req.socket?.remoteAddress || 
+         req.ip || 
+         'unknown';
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Start quiz session
   app.post("/api/quiz/start", async (req, res) => {
     try {
+      const clientIp = getClientIp(req);
+      
+      // Check if IP is blocked
+      if (await storage.isIpBlocked(clientIp)) {
+        return res.status(403).json({ 
+          message: "Access denied",
+          blocked: true 
+        });
+      }
+
       const sessionId = nanoid();
       const attempt = await storage.createQuizAttempt({
         sessionId,
@@ -21,6 +40,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sessionId,
         questionNumber: null,
         answer: null,
+        ipAddress: clientIp,
       });
 
       res.json({ sessionId, attempt });
@@ -33,9 +53,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/quiz/answer", async (req, res) => {
     try {
       const { sessionId, questionNumber, answer } = req.body;
+      const clientIp = getClientIp(req);
 
       if (!sessionId || questionNumber === undefined || !answer) {
         return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Check if IP is blocked
+      if (await storage.isIpBlocked(clientIp)) {
+        return res.status(403).json({ 
+          message: "Access denied",
+          blocked: true 
+        });
       }
 
       const attempt = await storage.getQuizAttempt(sessionId);
@@ -53,6 +82,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sessionId,
         questionNumber,
         answer,
+        ipAddress: clientIp,
       });
 
       // Check if answer is correct based on question number
@@ -81,6 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             sessionId,
             questionNumber: null,
             answer: null,
+            ipAddress: clientIp,
           });
         }
 
@@ -91,11 +122,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           attempt: updatedAttempt 
         });
       } else {
+        // Wrong answer - block IP if it's question 3 (smoking question)
+        if (questionNumber === 3) {
+          await storage.blockIp({
+            ipAddress: clientIp,
+            reason: "smoking_dealbreaker"
+          });
+          
+          await storage.trackAnalytics({
+            event: "blocked_attempt",
+            sessionId,
+            questionNumber,
+            answer,
+            ipAddress: clientIp,
+          });
+        }
+
         res.json({ 
           correct: false, 
           completed: false,
           currentQuestion: attempt.currentQuestion,
-          attempt 
+          attempt,
+          blocked: questionNumber === 3 
         });
       }
     } catch (error) {

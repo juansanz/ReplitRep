@@ -78,11 +78,23 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
     mutationFn: () => apiRequest("POST", "/api/quiz/start"),
     onSuccess: async (response) => {
       const data = await response.json();
+      if (data.blocked) {
+        onIncompatible();
+        return;
+      }
       setSessionId(data.sessionId);
       setShowQuestions(true);
       setCurrentQuestion(1);
     },
-    onError: () => {
+    onError: async (error) => {
+      // Check if it's a blocked IP error
+      if (error instanceof Response && error.status === 403) {
+        const data = await error.json();
+        if (data.blocked) {
+          onIncompatible();
+          return;
+        }
+      }
       toast({
         title: "Error",
         description: "No se pudo iniciar el quiz. Inténtalo de nuevo.",
@@ -96,6 +108,10 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
       apiRequest("POST", "/api/quiz/answer", { sessionId, answer, questionNumber }),
     onSuccess: async (response) => {
       const data = await response.json();
+      if (data.blocked) {
+        onIncompatible();
+        return;
+      }
       if (data.correct) {
         setShowError(false);
         if (data.completed) {
@@ -111,7 +127,15 @@ export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizCo
         onIncompatible();
       }
     },
-    onError: () => {
+    onError: async (error) => {
+      // Check if it's a blocked IP error
+      if (error instanceof Response && error.status === 403) {
+        const data = await error.json();
+        if (data.blocked) {
+          onIncompatible();
+          return;
+        }
+      }
       toast({
         title: "Error",
         description: "No se pudo procesar la respuesta. Inténtalo de nuevo.",

@@ -27,18 +27,9 @@ export default function IncompatibleContainer({ onTryAgain }: IncompatibleContai
               Te deseo lo mejor en tu búsqueda. ¡Que tengas un buen día!
             </p>
             
-            <div className="space-y-3">
-              <Button 
-                variant="outline"
-                className="w-full"
-                onClick={onTryAgain}
-              >
-                <RotateCcw className="mr-2 w-4 h-4" />
-                Intentar de nuevo
-              </Button>
-              
+            <div className="text-center">
               <p className="text-xs text-gray-400">
-                O simplemente cierra esta página
+                Puedes cerrar esta página
               </p>
             </div>
           </CardContent>
