@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface QuizContainerProps {
   onQuizComplete: (sessionId: string) => void;
+  onIncompatible: () => void;
 }
 
 interface QuizOption {
@@ -30,42 +31,42 @@ const questions: Question[] = [
   {
     id: 1,
     title: "Pregunta 1 de 3",
-    question: "¿Cuál es tu plan perfecto para un viernes por la noche?",
+    question: "¿Cuál es la respuesta a todo?",
     icon: Gamepad,
     iconColor: "bg-accent",
     options: [
-      { letter: "A", text: "Una cena íntima seguida de un paseo bajo las estrellas", isCorrect: true },
-      { letter: "B", text: "Fiesta hasta el amanecer en el club más concurrido", isCorrect: false },
-      { letter: "C", text: "Maratón de Netflix en pijama", isCorrect: false },
+      { letter: "A", text: "42", isCorrect: true },
+      { letter: "B", text: "Jesucristo", isCorrect: false },
+      { letter: "C", text: "Y yo que sé", isCorrect: false },
     ]
   },
   {
     id: 2,
     title: "Pregunta 2 de 3",
-    question: "Si pudieras viajar a cualquier lugar del mundo, ¿cuál sería?",
-    icon: Plane,
+    question: "¿Tortilla de patatas con o sin cebolla?",
+    icon: Heart,
     iconColor: "bg-secondary",
     options: [
-      { letter: "A", text: "Santorini, Grecia - por las puestas de sol románticas", isCorrect: true },
-      { letter: "B", text: "Tokio, Japón - por la tecnología y la cultura", isCorrect: false },
-      { letter: "C", text: "Nueva York - por la energía de la gran ciudad", isCorrect: false },
+      { letter: "A", text: "Con cebolla", isCorrect: false },
+      { letter: "B", text: "Sin cebolla", isCorrect: true },
+      { letter: "C", text: "Me da igual", isCorrect: true },
     ]
   },
   {
     id: 3,
     title: "Pregunta 3 de 3",
-    question: "¿Qué buscas en una relación?",
-    icon: Heart,
+    question: "¿Eres fumadora?",
+    icon: Shield,
     iconColor: "bg-accent",
     options: [
-      { letter: "A", text: "Una conexión profunda y significativa", isCorrect: true },
-      { letter: "B", text: "Diversión sin compromisos", isCorrect: false },
-      { letter: "C", text: "Alguien que comparta mis hobbies", isCorrect: false },
+      { letter: "A", text: "De vez en cuando", isCorrect: false },
+      { letter: "B", text: "Sí", isCorrect: false },
+      { letter: "C", text: "Nunca", isCorrect: true },
     ]
   }
 ];
 
-export default function QuizContainer({ onQuizComplete }: QuizContainerProps) {
+export default function QuizContainer({ onQuizComplete, onIncompatible }: QuizContainerProps) {
   const [sessionId, setSessionId] = useState<string>("");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showQuestions, setShowQuestions] = useState(false);
@@ -106,8 +107,8 @@ export default function QuizContainer({ onQuizComplete }: QuizContainerProps) {
           }, 500);
         }
       } else {
-        setShowError(true);
-        setTimeout(() => setShowError(false), 3000);
+        // Wrong answer - trigger incompatibility
+        onIncompatible();
       }
     },
     onError: () => {
@@ -254,8 +255,8 @@ export default function QuizContainer({ onQuizComplete }: QuizContainerProps) {
             </div>
             <h2 className="text-2xl font-bold text-neutral mb-4">¡Hola! 👋</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Me llamo Juan y me encantaría conocerte mejor. Antes de acceder a mi perfil completo, 
-              me gustaría saber un poco sobre ti con unas preguntas divertidas.
+              Me llamo Juan y me encantaría conocerte mejor. Antes de poder darte mi número, 
+              me gustaría que respondieses a unas preguntas como si de una gymkhana se tratase.
             </p>
             <p className="text-sm text-gray-500 mb-8">
               Solo tomarán unos segundos y así podremos conocernos mejor 😊

@@ -55,7 +55,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         answer,
       });
 
-      const isCorrect = answer === "A"; // All correct answers are A
+      // Check if answer is correct based on question number
+      let isCorrect = false;
+      if (questionNumber === 1) {
+        isCorrect = answer === "A"; // Question 1: Only A is correct
+      } else if (questionNumber === 2) {
+        isCorrect = answer === "B" || answer === "C"; // Question 2: B or C are correct
+      } else if (questionNumber === 3) {
+        isCorrect = answer === "C"; // Question 3: Only C is correct
+      }
       
       if (isCorrect) {
         const newCurrentQuestion = attempt.currentQuestion + 1;
